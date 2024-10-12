@@ -83,16 +83,16 @@ ARG PHP_VERSION
 # Configure php-fpm to log to stdout of the container (stdout of PID 1)
 # We have to use /proc/1/fd/1 because /dev/stdout or /proc/self/fd/1 does not point to the container stdout (because we use apache as entrypoint)
 # We also disable the clear_env option to allow the use of environment variables in php-fpm
-COPY <<EOF /etc/php/${PHP_VERSION}/fpm/pool.d/zz-docker.conf
-#[global]
-#error_log = /proc/1/fd/1
+COPY <<EOF /etc/php/${PHP_VERSION}/fpm/pool.d/zz-docker.conf \
+[global] \
+error_log = /proc/1/fd/1 \
 
-#[www]
-#access.log = /proc/1/fd/1
-#catch_workers_output = yes
-#decorate_workers_output = no
-#clear_env = no
-#EOF
+[www] \
+access.log = /proc/1/fd/1 \
+catch_workers_output = yes \
+decorate_workers_output = no \
+clear_env = no \
+EOF \
 
 # PHP files should be handled by PHP, and should be preferred over any other file type
 COPY <<EOF /etc/apache2/conf-available/docker-php.conf \
@@ -110,22 +110,22 @@ DirectoryIndex index.php index.html \
 EOF \
 
 # Enable opcache and configure it recommended for symfony (see https://symfony.com/doc/current/performance.html)
-COPY <<EOF /etc/php/${PHP_VERSION}/fpm/conf.d/symfony-recommended.ini
-opcache.memory_consumption=256
-opcache.max_accelerated_files=20000
-opcache.validate_timestamp=0
-# Configure Realpath cache for performance
-realpath_cache_size=4096K
-realpath_cache_ttl=600
-EOF
+COPY <<EOF /etc/php/${PHP_VERSION}/fpm/conf.d/symfony-recommended.ini \
+opcache.memory_consumption=256 \
+opcache.max_accelerated_files=20000 \
+opcache.validate_timestamp=0 \
+# Configure Realpath cache for performance 
+realpath_cache_size=4096K \
+realpath_cache_ttl=600 \
+EOF \
 
 # Increase upload limit and enable preloading
-COPY <<EOF /etc/php/${PHP_VERSION}/fpm/conf.d/partdb.ini
-upload_max_filesize=256M
-post_max_size=300M
-opcache.preload_user=www-data
-opcache.preload=/var/www/html/config/preload.php
-EOF
+COPY <<EOF /etc/php/${PHP_VERSION}/fpm/conf.d/partdb.ini \
+upload_max_filesize=256M \
+post_max_size=300M \
+opcache.preload_user=www-data \
+opcache.preload=/var/www/html/config/preload.php \
+EOF \
 
 COPY ./.docker/symfony.conf /etc/apache2/sites-available/symfony.conf
 
