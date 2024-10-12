@@ -84,8 +84,8 @@ ARG PHP_VERSION
 # We have to use /proc/1/fd/1 because /dev/stdout or /proc/self/fd/1 does not point to the container stdout (because we use apache as entrypoint)
 # We also disable the clear_env option to allow the use of environment variables in php-fpm
 COPY <<EOF /etc/php/${PHP_VERSION}/fpm/pool.d/zz-docker.conf
-[global]
-error_log = /proc/1/fd/1
+#[global]
+#error_log = /proc/1/fd/1
 
 [www]
 access.log = /proc/1/fd/1
