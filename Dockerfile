@@ -95,19 +95,19 @@ COPY <<EOF /etc/php/${PHP_VERSION}/fpm/pool.d/zz-docker.conf
 #EOF
 
 # PHP files should be handled by PHP, and should be preferred over any other file type
-COPY <<EOF /etc/apache2/conf-available/docker-php.conf
-<FilesMatch \\.php$>
-	SetHandler application/x-httpd-php
-</FilesMatch>
+COPY <<EOF /etc/apache2/conf-available/docker-php.conf \
+<FilesMatch \\.php$> \
+	SetHandler application/x-httpd-php \
+</FilesMatch> \
 
-DirectoryIndex disabled
-DirectoryIndex index.php index.html
+DirectoryIndex disabled \
+DirectoryIndex index.php index.html \
 
-<Directory /var/www/>
-	Options -Indexes
-	AllowOverride All
-</Directory>
-EOF
+<Directory /var/www/> \
+	Options -Indexes \
+	AllowOverride All \
+</Directory> \
+EOF \
 
 # Enable opcache and configure it recommended for symfony (see https://symfony.com/doc/current/performance.html)
 COPY <<EOF /etc/php/${PHP_VERSION}/fpm/conf.d/symfony-recommended.ini
