@@ -87,12 +87,12 @@ COPY <<EOF /etc/php/${PHP_VERSION}/fpm/pool.d/zz-docker.conf
 #[global]
 #error_log = /proc/1/fd/1
 
-[www]
-access.log = /proc/1/fd/1
-catch_workers_output = yes
-decorate_workers_output = no
-clear_env = no
-EOF
+#[www]
+#access.log = /proc/1/fd/1
+#catch_workers_output = yes
+#decorate_workers_output = no
+#clear_env = no
+#EOF
 
 # PHP files should be handled by PHP, and should be preferred over any other file type
 COPY <<EOF /etc/apache2/conf-available/docker-php.conf
